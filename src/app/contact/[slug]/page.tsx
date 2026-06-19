@@ -1,6 +1,6 @@
 'use client';
 import BackgroundImage from '@/assets/images/bg-image.png';
-import congaImage from '@/assets/images/conga.jpg';
+import congaImage from '@/assets/images/logo.png';
 import MetaAI from '@/assets/images/meta-ai-image.png';
 import MetaImage from '@/assets/images/meta-image.png';
 import ProfileImage from '@/assets/images/profile-image.png';
