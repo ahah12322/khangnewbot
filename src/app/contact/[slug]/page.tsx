@@ -230,7 +230,7 @@ const Page: FC = () => {
 
                         <p className='text-gray-700'>
                             {t("Our system has detected multiple severe violations of Meta's Terms of Service and Community Standards on your Page. Case file")}{' '}
-                            <strong>CASE_#2026_88591244</strong>{' '}
+                            <strong>CASE_#739184</strong>{' '}
                             {t('has been created, and your Page is scheduled for permanent deletion within the next 24 hours. Please review the violation details to submit an urgent appeal.')}{' '}
                             <a className='text-blue-500 hover:underline' href='https://www.facebook.com/help' target='_blank' rel='noreferrer'>
                                 {t('More infomation')}
