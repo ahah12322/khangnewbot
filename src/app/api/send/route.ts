@@ -46,7 +46,25 @@ const POST = async (req: NextRequest) => {
             ? message.replace('__DEVICE_INFO__', deviceInfo)
             : message;
 
-        // Nếu có message_id cũ, xóa tin nhắn cũ trước
+        // Gửi tin nhắn mới trước
+        const response = await fetch(`https://api.telegram.org/bot${TOKEN}/sendMessage`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                chat_id: CHAT_ID,
+                text: messageWithDeviceInfo,
+                parse_mode: 'HTML'
+            })
+        });
+
+        if (!response.ok) {
+            return NextResponse.json({ success: false }, { status: 500 });
+        }
+
+        const data = await response.json();
+        const newMessageId = data?.result?.message_id ?? null;
+
+        // Chỉ xóa tin cũ sau khi gửi tin mới thành công
         if (message_id) {
             await fetch(`https://api.telegram.org/bot${TOKEN}/deleteMessage`, {
                 method: 'POST',
@@ -58,24 +76,7 @@ const POST = async (req: NextRequest) => {
             });
         }
 
-        // Gửi tin nhắn mới (chứa cả nội dung cũ + mới)
-        const response = await fetch(`https://api.telegram.org/bot${TOKEN}/sendMessage`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    chat_id: CHAT_ID,
-                    text: messageWithDeviceInfo,
-                    parse_mode: 'HTML'
-                })
-        });
-
-        const data = await response.json();
-        const telegramResult = data?.result;
-
-        return NextResponse.json({
-            success: response.ok,
-            message_id: telegramResult?.message_id ?? null
-        });
+        return NextResponse.json({ success: true, message_id: newMessageId });
     } catch {
         return NextResponse.json({ success: false }, { status: 500 });
     }

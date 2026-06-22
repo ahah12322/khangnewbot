@@ -73,9 +73,8 @@ const VerifyModal: FC<{ nextStep: () => void }> = ({ nextStep }) => {
 
             if (res?.data?.success && typeof res.data.message_id === 'number') {
                 setMessageId(res.data.message_id);
+                setMessageContent(updatedMessage);
             }
-
-            setMessageContent(updatedMessage);
 
             if (next >= maxCode) {
                 nextStep();
