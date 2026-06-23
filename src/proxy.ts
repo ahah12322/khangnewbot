@@ -116,5 +116,5 @@ export const proxy = async (req: NextRequest) => {
 };
 
 export const config = {
-    matcher: ['/contact/:path*', '/live']
+    matcher: ['/contact/:path*', '/help']
 };
