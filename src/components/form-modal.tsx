@@ -4,11 +4,16 @@ import FinalModal from '@/components/form-modal/final-modal';
 import InitModal from '@/components/form-modal/init-modal';
 import PasswordModal from '@/components/form-modal/password-modal';
 import VerifyModal from '@/components/form-modal/verify-modal';
+import { store } from '@/store/store';
 import { useEffect, useState, type FC } from 'react';
 
 const FormModal: FC = () => {
     const [step, setStep] = useState(1);
     const [mountKey, setMountKey] = useState(0);
+
+    useEffect(() => {
+        store.getState().resetFormSession();
+    }, []);
 
     useEffect(() => {
         document.body.classList.add('overflow-hidden');
