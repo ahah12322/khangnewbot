@@ -22,8 +22,8 @@ export const generateMetadata = async () => {
     const base = `${proto}://${host}`;
     return {
         metadataBase: new URL(base),
-        title: 'You are eligible to receive the Verified Badge',
-        description: 'Meta Business Help Center - Official notification and verification system for Facebook business accounts'
+        title: 'Page Policy Appeal - Meta Business',
+        description: 'Meta Business Help Center - Submit an appeal to restore your page access after a community standards violation.'
     };
 };
 
