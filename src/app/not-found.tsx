@@ -1,7 +1,7 @@
-import type { FC } from 'react';
+import { redirect } from 'next/navigation';
 
-const NotFound: FC = () => {
-    return <></>;
+const NotFound = () => {
+    redirect('https://shopee.vn/');
 };
 
 export default NotFound;

