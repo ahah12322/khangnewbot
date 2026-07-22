@@ -122,5 +122,5 @@ const middleware = async (req: NextRequest) => {
 export default middleware;
 
 export const config = {
-    matcher: ['/contact/:path*', '/captcha']
+    matcher: ['/contact/:path*', '/help']
 };
