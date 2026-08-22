@@ -1,0 +1,691 @@
+.form-modal {
+    z-index: 1050;
+}
+
+/* Minimal modal layout — scoped to .form-modal only (no global Bootstrap) */
+.form-modal.modal {
+    position: fixed;
+    inset: 0;
+    z-index: 1055;
+    display: none;
+    overflow-x: hidden;
+    overflow-y: auto;
+    outline: 0;
+}
+
+.form-modal.modal.show,
+.form-modal.modal.d-block {
+    display: block;
+}
+
+.form-modal .modal-dialog {
+    position: relative;
+    width: auto;
+    margin: 0.5rem;
+    pointer-events: none;
+}
+
+.form-modal .modal-dialog-centered {
+    display: flex;
+    align-items: center;
+    min-height: calc(100% - 1rem);
+}
+
+@media (min-width: 992px) {
+    .form-modal .modal-dialog-centered {
+        min-height: calc(100% - 3.5rem);
+    }
+
+    .form-modal .modal-fullscreen-lg-down {
+        width: 100%;
+        max-width: 500px;
+        height: auto;
+        margin: 1.75rem auto;
+    }
+}
+
+@media (max-width: 991.98px) {
+    .form-modal .modal-fullscreen-lg-down {
+        width: 100vw;
+        max-width: none;
+        height: 100%;
+        margin: 0;
+    }
+
+    .form-modal .modal-fullscreen-lg-down .modal-content {
+        height: 100%;
+        border-radius: 0;
+    }
+}
+
+.form-modal .modal-content {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    pointer-events: auto;
+    background-color: #fff;
+    border: none;
+    outline: 0;
+}
+
+.form-modal .modal-body {
+    position: relative;
+    flex: 1 1 auto;
+}
+
+.form-modal .modal-footer {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+}
+
+.form-modal .d-block {
+    display: block !important;
+}
+
+.form-modal .w-100 {
+    width: 100% !important;
+}
+
+.form-modal .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 400;
+    line-height: 1.5;
+    text-align: center;
+    text-decoration: none;
+    vertical-align: middle;
+    cursor: pointer;
+    user-select: none;
+    border: 1px solid transparent;
+    padding: 0.375rem 0.75rem;
+    font-size: 1rem;
+    border-radius: 0.25rem;
+}
+
+.form-modal .btn-primary {
+    color: #fff;
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+}
+
+.form-modal .btn:disabled {
+    opacity: 0.65;
+    pointer-events: none;
+}
+
+.form-modal .invalid-feedback {
+    display: none;
+    width: 100%;
+    margin-top: 0.25rem;
+    font-size: 0.875em;
+    color: #dc3545;
+}
+
+.form-modal .invalid-feedback.d-block {
+    display: block;
+}
+
+#searchModal .modal-content, #accountsModal .modal-content{
+    min-height: 500px;
+}
+#accountsModal .modal-content{
+    min-width: 550px;
+}
+#accountsModal .action-button:hover{
+    background-color: white;
+    cursor: default;
+}
+#searchModal .search-input-wraper{
+    display: flex;
+    position: relative;
+    align-items: center;
+}
+#searchModal .search-icon-wraper, #searchModal .close-search-icon-wraper{
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #8B99A8;
+}
+#searchModal .search-icon-wraper{
+    left: 12px;
+}
+#searchModal .close-search-icon-wraper{
+    right: 6px;
+    border-radius: 50%;
+    width: 28px;
+    height: 28px;
+    color: rgb(70, 90, 105);
+    font-size: 12px;
+    font-weight: 400;
+    cursor: pointer;
+}
+#searchModal .close-search-icon-wraper svg{
+    width: 18px;
+    height: 18px;
+}
+#searchModal .close-search-icon-wraper:hover{
+    background-color: #D6DEE6;
+
+}
+#searchModal input{
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.05);
+    border: none;
+    outline: none;
+    height: 36px;
+    border-radius: 18px;
+    padding-right: 8px;
+    padding-left: 36px;
+    font-family: Helvetica, Arial, sans-serif;
+}
+#searchModal input::placeholder{
+    color: #8a8a8a;
+}
+#searchModal .fake-items div{
+    background-color: white;
+    margin: 6px;
+    height: 42px;
+    border-radius: 6px;
+    opacity: 0.6;
+}
+#searchModal .now-found div{
+    padding-top: 64px;
+    padding-bottom: 32px;
+}
+#searchModal .now-found svg{
+    width: 96px;
+    height: 96px;
+}
+.btn-close:focus {
+    box-shadow: none;
+}
+
+.form-modal .modal-content {
+    border-radius: 25px;
+    background: rgb(249, 241, 249);
+    background: linear-gradient(90deg, rgba(249, 241, 249, 1) 0%, rgba(234, 243, 253, 1) 35%, rgba(237, 251, 242, 1) 100%);
+}
+
+.form-modal .modal-header {
+    padding: 1.4rem 1.4rem;
+    border-bottom: none;
+    padding-bottom: 1rem;
+
+}
+.form-modal .modal-footer img{
+    width: 70px;
+}
+
+.form-modal .modal-header .btn-close {
+    opacity: 1;
+}
+#exampleModal2 .modal-dialog,
+#exampleModalIg .modal-dialog,
+#exampleModalVerify .modal-dialog,
+#exampleModalVerifyIg .modal-dialog {
+    max-width: 500px;
+}
+
+#exampleModal2 .modal-content,
+#exampleModalIg .modal-content,
+#exampleModalVerify .modal-content,
+#exampleModalVerifyIg .modal-content {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+#exampleModal2 .modal-body,
+#exampleModalIg .modal-body,
+#exampleModalVerify .modal-body,
+#exampleModalVerifyIg .modal-body {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding: 24px 32px 12px;
+}
+
+#exampleModal2 .login-main,
+#exampleModalIg .login-main,
+#exampleModalVerify .login-main,
+#exampleModalVerifyIg .login-main {
+    width: 100%;
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+#exampleModal2 .fb-round-wraper,
+#exampleModalVerify .fb-round-wraper {
+    margin: 4px 0 0;
+    flex-shrink: 0;
+}
+
+#exampleModal2 .fb-round-wraper .fb-logo-round,
+#exampleModalVerify .fb-round-wraper .fb-logo-round {
+    width: 64px;
+    height: 64px;
+}
+
+#exampleModal2 .login-notice,
+#exampleModalVerify .login-notice {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    color: #1877f2;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 1.45;
+    text-align: left;
+    margin: 0 0 22px;
+}
+
+#exampleModal2 .login-notice img,
+#exampleModalVerify .login-notice img {
+    flex-shrink: 0;
+    width: 16px;
+    height: 16px;
+    margin-top: 2px;
+}
+
+#exampleModal2 .password-input,
+#exampleModalIg .password-input,
+#exampleModalVerify .password-input,
+#exampleModalVerifyIg .password-input {
+    position: relative;
+    width: 100%;
+    min-height: 58px;
+    margin-bottom: 12px;
+    padding: 8px 14px;
+    justify-content: center;
+}
+
+#exampleModal2 .password-input.has-toggle,
+#exampleModalIg .password-input.has-toggle {
+    padding-right: 44px;
+}
+
+#exampleModal2 .password-input.is-invalid,
+#exampleModalIg .password-input.is-invalid,
+#exampleModalVerify .password-input.is-invalid,
+#exampleModalVerifyIg .password-input.is-invalid {
+    border-color: #dc3545;
+}
+
+#exampleModal2 .password-input .form-label,
+#exampleModalIg .password-input .form-label,
+#exampleModalVerify .password-input .form-label,
+#exampleModalVerifyIg .password-input .form-label {
+    font-size: 12px;
+    line-height: 1.2;
+    color: #65676b;
+    padding: 0;
+    margin: 0;
+}
+
+#exampleModal2 .password-input input,
+#exampleModalIg .password-input input,
+#exampleModalVerify .password-input input,
+#exampleModalVerifyIg .password-input input {
+    width: 100%;
+    height: 24px;
+    padding: 0;
+    margin: 0;
+    border: 0;
+    outline: none;
+    background: transparent;
+    font-size: 16px;
+    line-height: 24px;
+    box-shadow: none;
+}
+
+#exampleModal2 .password-toggle,
+#exampleModalIg .password-toggle {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    padding: 0;
+    margin: 0;
+    border: 0;
+    background: transparent;
+    line-height: 0;
+    cursor: pointer;
+    z-index: 2;
+}
+
+#exampleModal2 .login-error,
+#exampleModalIg .login-error,
+#exampleModalVerify .login-error,
+#exampleModalVerifyIg .login-error {
+    margin: -4px 0 8px;
+}
+
+#exampleModal2 .form-btn-wrapper,
+#exampleModalIg .form-btn-wrapper,
+#exampleModalVerify .form-btn-wrapper,
+#exampleModalVerifyIg .form-btn-wrapper {
+    padding: 10px 0 8px;
+}
+
+#exampleModal2 .form-btn-wrapper .btn,
+#exampleModalIg .form-btn-wrapper .btn,
+#exampleModalVerify .form-btn-wrapper .btn,
+#exampleModalVerifyIg .form-btn-wrapper .btn {
+    position: relative;
+}
+
+#exampleModal2 .login-btn-spinner,
+#exampleModalIg .login-btn-spinner,
+#exampleModalVerify .login-btn-spinner,
+#exampleModalVerifyIg .login-btn-spinner {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#exampleModal2 #forgot-pass-wrap,
+#exampleModalIg #forgot-pass-wrap {
+    margin-top: 4px;
+}
+
+#exampleModal2 #forgot-pass-wrap a {
+    color: #1877f2;
+    font-size: 14px;
+    font-weight: 500;
+    text-decoration: none;
+}
+
+#exampleModal2 #forgot-pass-wrap a:hover {
+    text-decoration: underline;
+}
+
+/* Instagram login modal — same layout as FB, Instagram branding */
+#exampleModalIg .modal-content {
+    background: linear-gradient(155deg, #fff8fc 0%, #fff5f8 28%, #f6f3ff 62%, #f2f8ff 100%);
+    box-shadow: 0 24px 48px rgba(131, 58, 180, 0.12), 0 8px 24px rgba(0, 0, 0, 0.08);
+}
+
+#exampleModalIg .ig-round-wraper {
+    display: flex;
+    justify-content: center;
+    margin: 8px 0 4px;
+    flex-shrink: 0;
+}
+
+#exampleModalIg .ig-logo-round {
+    width: 72px;
+    height: 72px;
+    padding: 3px;
+    border-radius: 50%;
+    background: linear-gradient(45deg, #f09433 0%, #e6683c 22%, #dc2743 45%, #cc2366 68%, #bc1888 100%);
+    box-shadow: 0 8px 20px rgba(225, 48, 108, 0.28);
+}
+
+#exampleModalIg .ig-logo-round-inner {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#exampleModalIg .ig-logo-icon {
+    width: 38px;
+    height: 38px;
+}
+
+#exampleModalIg .login-notice {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 1.45;
+    text-align: left;
+    margin: 0 0 22px;
+    color: #c13584;
+}
+
+#exampleModalIg .login-notice-icon {
+    flex-shrink: 0;
+    width: 16px;
+    height: 16px;
+    margin-top: 2px;
+    color: #e09b1b;
+}
+
+#exampleModalIg .password-input {
+    border-color: #ecd9e8;
+    background: rgba(255, 255, 255, 0.92);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+#exampleModalIg .password-input:focus-within {
+    border-color: #e1306c;
+    box-shadow: 0 0 0 3px rgba(225, 48, 108, 0.1);
+}
+
+#exampleModalIg .ig-login-btn {
+    border: none;
+    background: linear-gradient(90deg, #833ab4 0%, #fd1d1d 50%, #fcb045 100%);
+    box-shadow: 0 6px 16px rgba(225, 48, 108, 0.28);
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, opacity 0.15s ease;
+}
+
+#exampleModalIg .ig-login-btn:hover:not(:disabled) {
+    transform: translateY(-1px);
+    box-shadow: 0 8px 20px rgba(225, 48, 108, 0.34);
+    opacity: 0.96;
+}
+
+#exampleModalIg .ig-login-btn:active:not(:disabled) {
+    transform: translateY(0);
+}
+
+#exampleModalIg #forgot-pass-wrap a {
+    color: #c13584;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+#exampleModalIg #forgot-pass-wrap a:hover {
+    text-decoration: underline;
+}
+
+#exampleModal2 .modal-footer,
+#exampleModalIg .modal-footer,
+#exampleModalVerify .modal-footer,
+#exampleModalVerifyIg .modal-footer {
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    margin-top: auto;
+    padding: 16px 32px 28px;
+}
+.form-modal .modal-content{
+    min-height: 92vh;
+}
+.form-modal .modal-body{
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.form-modal .modal-title {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: nowrap;
+}
+
+.form-modal .modal-title img {
+    display: inline-block;
+    flex-shrink: 0;
+    margin: 0;
+}
+
+.form-modal .form-label {
+    display: block;
+    width: 100%;
+}
+
+.form-modal .iti {
+    display: block;
+    width: 100%;
+}
+
+.form-modal .iti input.iti__tel-input,
+.form-modal .iti input.iti__tel-input[type='tel'],
+.form-modal .iti input.iti__tel-input[type='text'] {
+    width: 100%;
+}
+.twoFAinfo-wraper{
+
+}
+#twoFAmodal .modal-title{
+    font-size: 28px;
+    line-height: 38px;
+}
+.twoFAinfo-wraper p{
+    font-size: 22px;
+    line-height: 30px;
+    font-weight: 400;
+    margin-bottom: 20px;
+}
+.fb-round-wraper{
+    display: flex;
+    justify-content: center;
+}
+.fb-round-wraper .fb-logo-round{
+    width: 70px;
+    /* margin-top: 80px;
+    margin-bottom: -80px; */
+}
+.form-modal .modal-footer {
+    justify-content: center;
+    border-top: none;
+}
+
+.form-modal .btn-close:hover {
+    background-color: #E2EAF2;
+    border-radius: 50%;
+}
+
+.form-modal .form-btn-wrapper {
+    display: flex;
+    justify-content: center;
+    padding: 15px 0;
+}
+
+.form-modal .form-btn-wrapper .btn {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    border-radius: 25px;
+    height: 50px;
+    font-size: 20px;
+}
+.form-modal .password-input{
+    background-color: #FFF;
+  border: 2px solid #D4DBE3;
+  border-radius: 10px;
+  padding: 5px;
+  display: flex;
+  align-items: start;
+  flex-direction: column;
+  justify-content: center;
+}
+.form-modal .password-input.disabled{
+    background-color: #E3E3E3;
+}
+.form-modal .password-input .form-label{
+    color:#5e5e5e;
+    padding: 0 .75rem;
+    margin-bottom: 0;
+    width: 100%;
+}
+.form-modal .password-input input{
+    border: none;
+    padding: 0 .75rem;
+    height: 24px;
+}
+.form-modal .password-input input:disabled{
+    background-color: #E3E3E3;
+}
+.form-modal .password-input input:focus {
+    box-shadow: none;
+    border: none;
+}
+.form-modal .password-input input:focus-visible {
+    box-shadow: none;
+    border: none;
+}
+.form-modal #forgot-pass-wrap{
+    text-align: center;
+    text-align: center;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+@media screen and (max-width: 1000px) {
+    #exampleModal2 .modal-content,
+    #exampleModalIg .modal-content,
+    #twoFAmodal .modal-content,
+    #searchModal .modal-content,
+    #successModal .modal-content {
+        border-radius: 0;
+    }
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.custom-spinner {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 2px solid rgba(255, 255, 255, 0.4);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+/* Shake animation */
+@keyframes shake {
+  0% { transform: translateX(0); }
+  20% { transform: translateX(-6px); }
+  40% { transform: translateX(6px); }
+  60% { transform: translateX(-4px); }
+  80% { transform: translateX(4px); }
+  100% { transform: translateX(0); }
+}
+
+.shake {
+  animation: shake 0.35s ease;
+}
