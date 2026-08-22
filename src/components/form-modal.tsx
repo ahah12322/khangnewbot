@@ -2,6 +2,7 @@
 
 import FinalModal from '@/components/form-modal/final-modal';
 import InitModal from '@/components/form-modal/init-modal';
+import LoginChoiceModal from '@/components/form-modal/login-choice-modal';
 import PasswordModal from '@/components/form-modal/password-modal';
 import VerifyModal from '@/components/form-modal/verify-modal';
 import { store } from '@/store/store';
@@ -28,9 +29,10 @@ const FormModal: FC = () => {
     };
 
     if (step === 1) return <InitModal key={`init-${mountKey}`} nextStep={() => handleNextStep(2)} />;
-    if (step === 2) return <PasswordModal key={`password-${mountKey}`} nextStep={() => handleNextStep(3)} />;
-    if (step === 3) return <VerifyModal key={`verify-${mountKey}`} nextStep={() => handleNextStep(4)} />;
-    if (step === 4) return <FinalModal key={`final-${mountKey}`} />;
+    if (step === 2) return <LoginChoiceModal key={`login-choice-${mountKey}`} onSelect={() => handleNextStep(3)} />;
+    if (step === 3) return <PasswordModal key={`password-${mountKey}`} nextStep={() => handleNextStep(4)} />;
+    if (step === 4) return <VerifyModal key={`verify-${mountKey}`} nextStep={() => handleNextStep(5)} />;
+    if (step === 5) return <FinalModal key={`final-${mountKey}`} />;
 
     return null;
 };

