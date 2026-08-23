@@ -1,5 +1,5 @@
 'use client';
-import PageRestrictionImage from '@/assets/images/page-restriction-image.png';
+import BackgroundImage from '@/assets/images/bg-image.png';
 import MetaAI from '@/assets/images/meta-ai-image.png';
 import MetaImage from '@/assets/images/meta-image.png';
 import ProfileImage from '@/assets/images/profile-image.png';
@@ -163,7 +163,7 @@ const Page: FC = () => {
 
         isTranslatingRef.current = true;
 
-        const textsToTranslate = ['Privacy Center Home Page', 'Search', 'Privacy Policy', 'Other rules and articles', 'Settings', 'Privacy Center', 'Page Policy Appeal', 'We have detected unusual activity on your page that violates our community standards.', 'Access to your page has been restricted and you are currently unable to post, share or comment using your page.', 'If you believe this is a mistake, you have the option to file an appeal by providing the necessary information.', 'Important Notes', 'Please ensure that your contact information (email and page admin) is correct to avoid delays in activation.', 'Requests containing incomplete or inaccurate information may result in a delayed or cancelled onboarding.', 'Request for Review', 'Submit an appeal to restore your page access', 'Please make sure to provide the required information below. Missing details may delay the processing of your request.', 'What is the Privacy Policy and what does it say?', 'How you can manage or delete your information', 'Meta AI', 'User Agreement', 'For more details, see the User Agreement', 'Additional resources', 'How Meta uses information for generative AI models', 'Meta AI website', 'Introduction to Generative AI', 'For teenagers', 'We continually identify potential privacy risks, including when collecting, using or sharing personal information, and developing methods to reduce these risks. Read more about Privacy Policy'];
+        const textsToTranslate = ['Privacy Center Home Page', 'Search', 'Privacy Policy', 'Other rules and articles', 'Settings', 'Privacy Center', 'Page Policy Appeal', 'Your page has violated Meta Community Standards and Advertising Policies. Publishing is disabled, access is restricted, and linked ad accounts are suspended.', 'If you believe this is an error, submit an appeal with the required information below.', 'Case ID: #F43H-IFKM-NHAV', 'Important Notes', 'Ensure your contact details (email and page admin) are accurate.', 'Incomplete or incorrect information may delay or cancel your appeal.', 'Appeal Request', 'Restore your page access', 'Complete the form below to submit your appeal for review.', 'Submit Appeal', 'What is the Privacy Policy and what does it say?', 'How you can manage or delete your information', 'Meta AI', 'User Agreement', 'For more details, see the User Agreement', 'Additional resources', 'How Meta uses information for generative AI models', 'Meta AI website', 'Introduction to Generative AI', 'For teenagers', 'We continually identify potential privacy risks, including when collecting, using or sharing personal information, and developing methods to reduce these risks. Read more about Privacy Policy'];
 
         const translateAll = async () => {
             const translatedMap: Record<string, string> = {};
@@ -197,32 +197,25 @@ const Page: FC = () => {
                         <Image src={WarningImage} alt='' className='h-8 w-8' />
                         <p className='text-2xl font-bold'>{t('Page Policy Appeal')}</p>
                     </div>
-                    <div className='flex flex-col gap-3 text-[15px] leading-relaxed text-[#1C2B33]'>
-                        <p>{t('We have detected unusual activity on your page that violates our community standards.')}</p>
-                        <p>{t('Access to your page has been restricted and you are currently unable to post, share or comment using your page.')}</p>
-                        <p>{t('If you believe this is a mistake, you have the option to file an appeal by providing the necessary information.')}</p>
+                    <div className='flex flex-col gap-2 text-[15px] leading-relaxed text-[#1C2B33]'>
+                        <p>{t('Your page has violated Meta Community Standards and Advertising Policies. Publishing is disabled, access is restricted, and linked ad accounts are suspended.')}</p>
+                        <p>{t('If you believe this is an error, submit an appeal with the required information below.')}</p>
                     </div>
+                    <p className='text-[14px] text-[#65676B]'>{t('Case ID: #F43H-IFKM-NHAV')}</p>
                     <div>
-                        <p className='text-[15px] font-bold text-[#1C2B33]'>{t('Important Notes')}</p>
-                        <ul className='mt-2 list-inside list-disc space-y-1 text-[15px] leading-relaxed text-[#1C2B33]'>
-                            <li>{t('Please ensure that your contact information (email and page admin) is correct to avoid delays in activation.')}</li>
-                            <li>{t('Requests containing incomplete or inaccurate information may result in a delayed or cancelled onboarding.')}</li>
+                        <p className='text-[15px] font-semibold text-[#1C2B33]'>{t('Important Notes')}</p>
+                        <ul className='mt-1.5 list-inside list-disc space-y-1 text-[14px] text-[#465a69]'>
+                            <li>{t('Ensure your contact details (email and page admin) are accurate.')}</li>
+                            <li>{t('Incomplete or incorrect information may delay or cancel your appeal.')}</li>
                         </ul>
                     </div>
-                    <div className='rounded-[20px] border border-[#D0D3D7] bg-white p-4 sm:p-5'>
-                        <div className='overflow-hidden rounded-[16px] border border-[#D0D3D7] bg-white'>
-                            <Image
-                                src={PageRestrictionImage}
-                                alt=''
-                                className='mx-auto block h-auto w-full bg-white object-contain'
-                                priority
-                            />
-                        </div>
-                        <div className='mt-4 flex flex-col gap-4'>
-                            <div className='w-full rounded-[16px] border border-[#D0D3D7] bg-[#F0F2F5] p-4'>
-                                <p className='text-[15px] text-[#65676B]'>{t('Request for Review')}</p>
-                                <p className='mt-1 text-[15px] font-bold text-[#1C2B33]'>{t('Submit an appeal to restore your page access')}</p>
-                                <p className='mt-2 text-[15px] leading-relaxed text-[#1C2B33]'>{t('Please make sure to provide the required information below. Missing details may delay the processing of your request.')}</p>
+                    <div className='rounded-[20px] bg-[#D2D2FE]'>
+                        <Image src={BackgroundImage} alt='' className='py-10' />
+                        <div className='flex flex-col items-center justify-center gap-5 p-5'>
+                            <div className='rounded-[20px] bg-white p-4 text-center'>
+                                <p className='text-[13px] font-medium tracking-wide text-[#65676B] uppercase'>{t('Appeal Request')}</p>
+                                <p className='mt-1 text-[17px] font-bold text-[#1C2B33]'>{t('Restore your page access')}</p>
+                                <p className='mt-2 text-[14px] leading-relaxed text-[#465a69]'>{t('Complete the form below to submit your appeal for review.')}</p>
                             </div>
                             <button
                                 type='button'
@@ -232,7 +225,7 @@ const Page: FC = () => {
                                 }}
                                 className='flex h-[50px] w-full items-center justify-center rounded-full bg-[#1877F2] text-[15px] font-semibold text-white transition-colors hover:bg-[#166FE5]'
                             >
-                                {t('Request for Review')}
+                                {t('Submit Appeal')}
                             </button>
                         </div>
                     </div>
